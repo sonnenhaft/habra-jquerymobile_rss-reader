@@ -26,12 +26,14 @@ jQuery(document).ready(function($){
                 });
                 var clonedSaveButton = saveButton.clone();
                 clonedSaveButton.attr('data-save-button', feed.title).click(function(){
-                    clonedSaveButton.fadeOut('slow');
+                    clonedSaveButton.fadeOut('slow', function(){
+                        clonedSaveButton.closest('h4').addClass('hidden-button');                        
+                    });
                     rssMemory.rememberFeed(feed.title, feed.content);
                     return false;
                 });
                 if (localStorage.getItem(feed.title)){
-                    clonedSaveButton.hide();
+                    feedTitle.addClass('hidden-button')
                 }
                 return $('<div>', {
                     'data-role': "collapsible"

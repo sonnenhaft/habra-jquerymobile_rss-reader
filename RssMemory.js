@@ -18,12 +18,13 @@ var RssMemory;
             targetBlock.fadeOut('slow', function(){
                 targetBlock.remove();
             });
-            $('[data-save-button="' + title + '"]').show();
+            $('[data-save-button="' + title + '"]').show().closest('h4').removeClass('hidden-button');
         },
         _rememberFeed: function(title, content){
             if (title == 'FeedUrl') return;
+            var that = this;
             var forgetButton = this.forgetButton.clone().click(function(){
-                this._forgetFeed(title);
+                that._forgetFeed(title);
                 return false;
             });
             var feedBlock = $('<div>', {
