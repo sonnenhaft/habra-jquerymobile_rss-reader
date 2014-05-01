@@ -1,0 +1,120 @@
+<html>
+<head>
+<style>
+    img {
+        max-width: 100%;
+    }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="jquery.feedek.forked.js"></script>
+<script src="RssMemory.js"></script>
+<script src="RssReaderPage.js"></script>
+
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.2/jquery.mobile.min.css"/>
+<script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.2/jquery.mobile.min.js"></script>
+</head>
+<title>rss reader</title>
+
+<body>
+<div data-role="page" id="new_feeds_page" data-theme="a">
+    <div style="display: none">
+        <a href="index.html" data-role="button"
+           data-iconpos="right" data-theme="b" data-icon="plus"
+           data-inline="true" data-mini="true" class="saveButton"
+           style="float:right">save</a>
+        <a href="index.html" data-role="button"
+           data-iconpos="right" data-theme="b" data-icon="delete"
+           data-inline="true" data-mini="true" class="forgetButton"
+           style="float:right">forget</a>
+    </div>
+
+    <div data-role="header">
+        <h1 id="rssUrlHeader">New feeds</h1>
+        <a href="#saved_feeds_page" data-icon="check" class="ui-btn-left">saved feeds</a>
+        <a href="#options_page" data-icon="gear" data-rel="dialog" data-transition="pop">Options</a>
+    </div>
+    <!-- /navbar -->
+    <div data-role="content">
+        <button onclick="location.reload()" data-icon="refresh">refresh</button>
+        <div data-role="collapsible-set" data-inset="true" id="feeds"
+             data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+        </div>
+    </div>
+    <div data-role="footer">
+    </div>
+</div>
+<div data-role="page" id="saved_feeds_page" data-theme="a">
+    <div data-role="header">
+        <h1>Saved feeds</h1>
+        <a data-rel="back" data-icon="arrow-l" class="ui-btn-left">back</a>
+        <a href="#options_page" data-icon="gear" class="ui-btn-right">Options</a>
+    </div>
+    <div data-role="content">
+        <div data-role="collapsible-set" data-inset="true" id="savedFeeds">
+        </div>
+    </div>
+</div>
+
+<div data-role="page" id="options_page" data-theme="a" data-close-btn="right">
+    <div data-role="header">
+        <h1>Options</h1>
+    </div>
+    <div data-role="content">
+        <label for="FeedUrl">rss feed url:</label>
+        <input id="FeedUrl"/>
+        <div class="ui-grid-b">
+            <div class="ui-block-a">
+                <a data-role="button" data-rel="back" data-corners="true" data-shadow="true" data-icon="delete"
+                   data-iconshadow="true" data-wrapperels="span" data-theme="b">
+                    Cancel
+                </a>
+            </div>
+            <div class="ui-block-c"></div>
+            <div class="ui-block-c">
+                <a data-role="button" href="/" data-corners="true" data-shadow="true" data-icon="check"
+                   data-iconshadow="true" data-wrapperels="span" data-iconpos="right">
+                    Apply
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div data-role="page" id="offline_error" data-theme="a" data-close-btn="right">
+    <div data-role="header">
+        <h1>Working offline</h1>
+    </div>
+    <div data-role="content">
+        No internet connection, feeds will be not loaded, try again later.
+        Right now you can read only saved feeds.
+        <a data-role="button" data-corners="true" data-shadow="true"
+           data-iconshadow="true" data-wrapperels="span" href="#options_page" data-rel="dialog">
+            Saved feeds
+        </a>
+        <a data-role="button" data-rel="back" data-corners="true" data-shadow="true"
+           data-iconshadow="true" data-wrapperels="span" data-theme="b">
+            Ok
+        </a>
+    </div>
+</div>
+
+<div data-role="page" id="rss_error" data-theme="a" data-close-btn="right">
+    <div data-role="header">
+        <h1>Working offline</h1>
+    </div>
+    <div data-role="content">
+        No feeds were found in RSS url, to use default RSS URL, remove URL in options.
+        <a data-role="button" data-corners="true" data-shadow="true"
+           data-iconshadow="true" data-wrapperels="span" href="#options_page" data-rel="dialog">
+            Options
+        </a>
+        <a data-role="button" data-rel="back" data-corners="true" data-shadow="true"
+           data-iconshadow="true" data-wrapperels="span" data-theme="b">
+            Close
+        </a>
+    </div>
+</div>
+
+</body>
+</html>
