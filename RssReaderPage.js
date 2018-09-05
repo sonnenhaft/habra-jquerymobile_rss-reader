@@ -2,8 +2,7 @@ jQuery(document).ready(function($){
     var rssMemory = new RssMemory();
     rssMemory.initSavedFeeds();
     // [{url: '', date: DateObject, content:BigContent, desc: SmallContent}, ..]
-    var DEFAULT_URL = "http://habrahabr.ru/rss/best";
-    var savedUrl = localStorage.getItem('FeedUrl') || savedUrl;
+    var savedUrl = localStorage.getItem('FeedUrl') || 'https://habrahabr.ru/rss/best';
     $('#FeedUrl').attr('placeholder', savedUrl).val(savedUrl).change(function(){
         localStorage.setItem('FeedUrl', $(this).val());
     });
@@ -27,7 +26,7 @@ jQuery(document).ready(function($){
                 var clonedSaveButton = saveButton.clone();
                 clonedSaveButton.attr('data-save-button', feed.title).click(function(){
                     clonedSaveButton.fadeOut('slow', function(){
-                        clonedSaveButton.closest('h4').addClass('hidden-button');                        
+                        clonedSaveButton.closest('h4').addClass('hidden-button');
                     });
                     rssMemory.rememberFeed(feed.title, feed.content);
                     return false;

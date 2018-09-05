@@ -21,7 +21,9 @@ var RssMemory;
             $('[data-save-button="' + title + '"]').show().closest('h4').removeClass('hidden-button');
         },
         _rememberFeed: function(title, content){
-            if (title == 'FeedUrl') return;
+            if (title === 'FeedUrl') {
+                return;
+            }
             var that = this;
             var forgetButton = this.forgetButton.clone().click(function(){
                 that._forgetFeed(title);
@@ -35,7 +37,7 @@ var RssMemory;
             this.savedFeeds.append(feedBlock.collapsible());
         },
         initSavedFeeds: function(){
-            $.each(localStorage, this._rememberFeed);
+            // $.each(localStorage, this._rememberFeed);
         }
     }
 })(jQuery);
