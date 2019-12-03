@@ -1,6 +1,6 @@
 ## What is it
 
-It is my old university project - intead of mobile app I made jquery mobile page with rss from habr.com 
+It is my old university project - instead of mobile app I made jquery mobile page with rss from habr.com 
 
 ## Server for CORS habr api
 
