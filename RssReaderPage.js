@@ -2,7 +2,9 @@ jQuery(document).ready(function($){
     var rssMemory = new RssMemory();
     rssMemory.initSavedFeeds();
     // [{url: '', date: DateObject, content:BigContent, desc: SmallContent}, ..]
-    var savedUrl = localStorage.getItem('FeedUrl') || 'https://habrahabr.ru/rss/best';
+    var savedUrl = localStorage.getItem('FeedUrl') || 'https://habr.ru/rss/best';
+    savedUrl = 'https://zebrazobrazubra.000webhostapp.com/?url=' + savedUrl
+
     $('#FeedUrl').attr('placeholder', savedUrl).val(savedUrl).change(function(){
         localStorage.setItem('FeedUrl', $(this).val());
     });
