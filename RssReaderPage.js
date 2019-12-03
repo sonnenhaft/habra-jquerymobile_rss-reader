@@ -1,44 +1,38 @@
-jQuery(document).ready(function($){
+var savedUrl = localStorage.getItem('FeedUrl') || 'https://habr.ru/rss/best';
+
+$.get('https://zebrazobrazubra.000webhostapp.com/?url=' + savedUrl, function (data) {
     var rssMemory = new RssMemory();
     rssMemory.initSavedFeeds();
-    // [{url: '', date: DateObject, content:BigContent, desc: SmallContent}, ..]
-    var savedUrl = localStorage.getItem('FeedUrl') || 'https://habr.ru/rss/best';
-    savedUrl = 'https://zebrazobrazubra.000webhostapp.com/?url=' + savedUrl
 
-    $('#FeedUrl').attr('placeholder', savedUrl).val(savedUrl).change(function(){
-        localStorage.setItem('FeedUrl', $(this).val());
+    const feeds = $(data).find('item').toArray().map(item => ({
+        content: $(item).find('description').html().toString().replace('<![CDATA[', '').replace(']]&gt;', ''),
+        image: $(item).find('url').text(),
+        title: $(item).find('title').text().replace('<![CDATA[', '').replace(']]>', '')
+    }));
+
+    $('#feeds').collapsibleset().html(feeds.map(({content, title}, index) => `<div data-role="collapsible" text-id="${index}">
+                    <h4${localStorage.getItem(title) ? 'class="hidden-button"' : ''}>
+                        ${title}
+                         <a href="index.html" data-role="button"
+                               data-iconpos="right" data-theme="b" data-icon="plus"
+                               data-mini="true" class="saveButton ui-btn-right  ui-btn ui-shadow ui-corner-all ui-btn-icon-left  ui-icon-plus"> </a>    
+                    </h4>
+                    <p></p>
+            </div>`).join('')).collapsibleset('refresh');
+
+    $('.saveButton').click(function () {
+        let {title, content} = feeds[$(this).parent().parent().parent().attr('text-id')];
+        $(this).fadeOut('slow', function () {
+            $(this).closest('h4').addClass('hidden-button');
+        });
+        rssMemory.rememberFeed(title, content);
+        return false;
     });
-    var saveButton = $('.saveButton');
-    $('#feeds').FeedEk({FeedUrl: savedUrl,
-        rssError: function(){
-            $.mobile.changePage("#rss_error", {transition: 'pop', role: 'dialog'});
-        },
-        ajaxError: function(){
-            $.mobile.changePage("#offline_error", {transition: 'pop', role: 'dialog'});
-        },
-        success: function(feeds, title){
-            $('#rssUrlHeader').text(title);
-            $('title').text(title);
-            $('#feeds').collapsibleset().append($.map(feeds, function(feed, ignored){
-                feed.content = feed.content.replace(/\#[a-z\-\_]+/i, '');
-                var feedContent = $('<p>');
-                var feedTitle = $('<h4>', {text: feed.title}).one('click', function(){
-                    feedContent.html(feed.content)
-                });
-                var clonedSaveButton = saveButton.clone();
-                clonedSaveButton.attr('data-save-button', feed.title).click(function(){
-                    clonedSaveButton.fadeOut('slow', function(){
-                        clonedSaveButton.closest('h4').addClass('hidden-button');
-                    });
-                    rssMemory.rememberFeed(feed.title, feed.content);
-                    return false;
-                });
-                if (localStorage.getItem(feed.title)){
-                    feedTitle.addClass('hidden-button')
-                }
-                return $('<div>', {
-                    'data-role': "collapsible"
-                }).append(feedTitle.append(clonedSaveButton), feedContent);
-            })).collapsibleset("refresh");
-        }});
+
+    $('h4').one('click', function () {
+        $(this).parent().find('p').html(feeds[$(this).parent().attr('text-id')].content)
+    })
+}).fail(function () {
+    // $.mobile.changePage("#rss_error", {transition: 'pop', role: 'dialog'});
+    $.mobile.changePage("#offline_error", {transition: 'pop', role: 'dialog'});
 });
