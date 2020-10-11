@@ -61,7 +61,16 @@ const setFeeds = feeds => {
 
 const savedUrl = localStorage.getItem('CurrentRssUrl') || 'https://habr.ru/rss/best';
 $('#CurrentRssUrl').val(savedUrl);
-$.get('https://zebrazobrazubra.000webhostapp.com/?url=' + savedUrl, ({title, item}) => {
+$.get('https://cors-anywhere.herokuapp.com/' + savedUrl, (d) => {
+    const replace = (xml, tag) => xml.querySelector(tag).innerHTML.toString()
+        .replace('<![CDATA[', '')
+        .replace(']]>');
+    const channel = d.querySelector('channel');
+    const item = Array.from(channel.querySelectorAll('item')).map(item => ({
+        description: replace(item, 'description'),
+        title: replace(item, 'title'),
+    }))
+    const title = replace(channel, 'title');
     $('#RssChannelTitle').text(title);
     $('title').text(title);
     setFeeds(item);
